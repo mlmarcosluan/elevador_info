@@ -8,11 +8,11 @@ Este projeto tem como objetivo extrair dados de mensagens no Telegram que inform
 
 ## 📌 Índice
 
-1. [Descrição do Projeto](#descrição-do-projeto)
-2. [Dados Coletados](#dados-coletados)
-3. [Pré-requisitos](#pré-requisitos)
-4. [Instalação](#instalação)
-5. [Como Usar](#como-usar)
+1. [Descrição do Projeto](#-descrição-do-projeto)
+2. [Dados Coletados](#-dados-coletados)
+3. [Pré-requisitos](#-pré-requisitos)
+4. [Instalação](#-instalação)
+5. [Como Usar](#-como-usar)
 6. [Estrutura do Projeto](#estrutura-do-projeto)
 
 ---
