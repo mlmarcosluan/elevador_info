@@ -65,7 +65,24 @@ Para executar este projeto, você precisará dos seguintes itens instalados:
    cd elevador_info
    ```
 2. Instale as dependências necessárias:
+Para não haver conflitos crie um ambiente virtual:
+    - Instale o módulo `venv` (se ainda não estiver instalado):
+        ```bash
+            sudo apt install python3-venv
+        ```
+    - Entre na pasta do projeto:
+        ```bash
+            cd ~/elevador_info
+        ```
+    - Crie e ative o ambiente virtual:
+        ```bash
+            python3 -m venv venv
+            source venv/bin/activate
+        ```
+    - Quando desejar parar o ambiente virtual digite:
+        `deactivate`
     ```bash
+    
     pip instal telethon
     ```
 3. Condigure suas credenciais do Telegram:
