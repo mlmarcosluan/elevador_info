@@ -81,8 +81,10 @@ Para não haver conflitos crie um ambiente virtual:
         ```
     - Quando desejar parar o ambiente virtual digite:
         `deactivate`
+
+    - Instale o Telethon
     ```bash
-    
+
     pip instal telethon
     ```
 3. Condigure suas credenciais do Telegram:
