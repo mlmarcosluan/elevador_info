@@ -13,7 +13,7 @@ Este projeto tem como objetivo extrair dados de mensagens no Telegram que inform
 3. [Pré-requisitos](#-pré-requisitos)
 4. [Instalação](#-instalação)
 5. [Como Usar](#-como-usar)
-6. [Estrutura do Projeto](#estrutura-do-projeto)
+6. [Estrutura do Projeto](#-estrutura-do-projeto)
 
 ---
 
@@ -96,3 +96,4 @@ Para executar este projeto, você precisará dos seguintes itens instalados:
     ├──      
     └── README.md             # Este arquivo
 ```
+Por segurança o arquivo `.env` esta em uma pasta fora do repositório
