@@ -1,0 +1,4 @@
+Name ID,Andar,Ano,Mês,Dia,Dia da Semana,Horas,Minutos,Segundos
+"{'Name ID': 'datatime.datatime(2025, 2, 4, 20, 2, 0, tzinfo=datetime.timezone(datetime.timedelta(days=-1, seconds=75600)))'}",10,2025,2,4,Terça-Feira,20,2,0
+"{'Name ID': 'datatime.datatime(2025, 2, 3, 20, 7, 0, tzinfo=datetime.timezone(datetime.timedelta(days=-1, seconds=75600)))'}",6,2025,2,3,Segunda-Feira,20,7,0
+"{'Name ID': 'datatime.datatime(2025, 2, 4, 20, 2, 0, tzinfo=datetime.timezone(datetime.timedelta(days=-1, seconds=75600)))'}",10,2025,2,4,Terça-Feira,20,2,0

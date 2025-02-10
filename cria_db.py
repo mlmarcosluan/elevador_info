@@ -12,6 +12,7 @@ from datetime import datetime, timezone, timedelta
 
 def adicionar_dados_mensagem():
     
+    andar = ""
     ano = ""
     mes = ""
     dia = ""
@@ -22,8 +23,11 @@ def adicionar_dados_mensagem():
     while True:
         
         try:
-            if ano == "":
-                ano = int (input("Digite o ano: "))
+            if andar == "":
+                andar = int(input("Digite o andar: "))
+
+            elif ano == "":
+                ano = int(input("Digite o ano: "))
 
             elif mes == "":
                 mes = int(input("Digite o número do mês: "))
@@ -50,7 +54,7 @@ def adicionar_dados_mensagem():
             input("Aperte Enter para continuar")
             limpar_tela()
             continue
-        if ano != "" and mes != "" and dia != "" and horas != "" and minutos != "" and segundos != "":
+        if andar != "" and ano != "" and mes != "" and dia != "" and horas != "" and minutos != "" and segundos != "":
             print("# ================================================")
             print("Dados completos.")
             print("")
@@ -66,6 +70,7 @@ def adicionar_dados_mensagem():
 
     dados_mensagem = {}
     dados_mensagem[name_id] = {
+        "Andar": andar,
         "Ano": ano,
         "Mês": mes,
         "Dia": dia,
@@ -87,7 +92,7 @@ def salvar_dados_mensagem(dados_mensagem, name_id):
             
         # Carregar arquivo
         try:
-            caminho_arquivo_csv = input("Digite o caminho do arquivo csv: ")
+            caminho_arquivo_csv = "/home/marcos/VScode/elevador_info/data_base/data_base.csv"
         except ValueError:
             print("Caminho Incorreto!!!")
 
@@ -113,6 +118,7 @@ def salvar_dados_mensagem(dados_mensagem, name_id):
     # Se não esta no arquivo vamos adicionar
     dados_arquivo[name_id] = {
             "Name ID": sub_dados["Name ID"],
+            "Andar": sub_dados["Andar"],
             "Ano": sub_dados["Ano"],
             "Mês": sub_dados["Mês"],
             "Dia": sub_dados["Dia"],
@@ -133,7 +139,6 @@ def salvar_dados_mensagem(dados_mensagem, name_id):
     input("Aperte Enter para continuar.")
     limpar_tela()
 
-    menu_principal()
 
 
 # ================================================
@@ -181,20 +186,25 @@ def carregar_dados_csv(caminho_arquivo_csv):
         # Se o arquivo não existir, retorna um dicionário vazio
         return {}
 
-# Função para salvar os dados no arquivo CSV
 def salvar_em_csv(dados_mensagem, caminho_arquivo_csv):
     # Define os cabeçalhos das colunas
-    cabecalhos = ["Name ID", "Ano", "Mês", "Dia", "Dia da Semana", "Horas", "Minutos", "Segundos"]
+    cabecalhos = ["Name ID", "Andar", "Ano", "Mês", "Dia", "Dia da Semana", "Horas", "Minutos", "Segundos"]
     
-    # Abre o arquivo CSV para escrita
-    with open(caminho_arquivo_csv, mode='w', newline='', encoding='utf-8') as arquivo:
+    # Verifica se o arquivo já existe
+    arquivo_existe = os.path.isfile(caminho_arquivo_csv)
+    
+    # Abre o arquivo CSV para escrita ou append
+    with open(caminho_arquivo_csv, mode='a', newline='', encoding='utf-8') as arquivo:
         writer = csv.DictWriter(arquivo, fieldnames=cabecalhos)
         
-        # Escreve o cabeçalho
-        writer.writeheader()
+        # Escreve o cabeçalho apenas se o arquivo não existir
+        if not arquivo_existe:
+            writer.writeheader()
         
-        # Escreve os dados
+        # Escreve os novos dados
         writer.writerows(dados_mensagem.values())
+
+    main()
 
 # ================================================
 #        Menu Principal
