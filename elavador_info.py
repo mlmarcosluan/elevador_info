@@ -94,7 +94,7 @@ async def pesquisar_mensagens():
                 # Adicionar informações da mensagem no dicionario
                 dicionario_mensagens[data_brasil] = {"Andar": mensagem.message,"Ano": data_brasil.year, "Mes": data_brasil.month, "Dia": data_brasil.day, "Hora": data_brasil.hour, "Minuto": data_brasil.minute} 
 
-
+            print(dicionario_mensagens)
             input("Aperte enter para coninuar")
         except Exception as e:
             print(f"Erro ao acessar o grupo: {e}")
