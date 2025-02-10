@@ -109,7 +109,7 @@ async def pesquisar_mensagens():
 #        Função gerais
 # ================================================    
 
-# Detecta o sistema operacional e executa o comando adequado
+# Detecta o sistema operacional para limpar a tela
 def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
 
