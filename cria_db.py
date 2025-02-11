@@ -70,6 +70,7 @@ def adicionar_dados_mensagem():
 
     dados_mensagem = {}
     dados_mensagem[name_id] = {
+        "Name ID": name_id,
         "Andar": andar,
         "Ano": ano,
         "Mês": mes,
@@ -87,67 +88,48 @@ def adicionar_dados_mensagem():
 # ================================================
 
 def salvar_dados_mensagem(dados_mensagem, name_id):
-
-    while True:
-            
-        # Carregar arquivo
-        try:
-            caminho_arquivo_csv = "/home/marcos/VScode/elevador_info/data_base/data_base.csv"
-        except ValueError:
-            print("Caminho Incorreto!!!")
-
-        if caminho_arquivo_csv != "":
-            break
-
+    caminho_arquivo_csv = "/home/marcos/VScode/elevador_info/data_base/data_base.csv"
+    
+    # Carrega os dados existentes do arquivo CSV
     dados_arquivo = carregar_dados_csv(caminho_arquivo_csv)
-
-    # Verifica o name_id para ver se a mensagem ja está no banco de dados
+    
+    # Verifica se o name_id já existe no arquivo
     if name_id in dados_arquivo:
-        # Se sim não faz nada
         print("# ================================================")
-        print("Mensagem ja salva no banco de dados")
+        print("Mensagem já salva no banco de dados.")
         print("")
-        print("")
-        print("")
-        input("Aperte Enter para continuar")
+        input("Aperte Enter para continuar.")
         limpar_tela()
+        return
 
+    # Adiciona a nova mensagem ao dicionário
     sub_dados = dados_mensagem[name_id]
-
-    sub_dados["Name ID"] = {"Name ID": name_id}
-    # Se não esta no arquivo vamos adicionar
     dados_arquivo[name_id] = {
-            "Name ID": sub_dados["Name ID"],
-            "Andar": sub_dados["Andar"],
-            "Ano": sub_dados["Ano"],
-            "Mês": sub_dados["Mês"],
-            "Dia": sub_dados["Dia"],
-            "Dia da Semana": sub_dados["Dia da Semana"],
-            "Horas": sub_dados["Horas"],
-            "Minutos": sub_dados["Minutos"],
-            "Segundos": sub_dados["Segundos"]
-        }
-    print(f"Adicionando o Name ID '{name_id}' ao arquivo.")
+        "Name ID": name_id,
+        "Andar": sub_dados["Andar"],
+        "Ano": sub_dados["Ano"],
+        "Mês": sub_dados["Mês"],
+        "Dia": sub_dados["Dia"],
+        "Dia da Semana": sub_dados["Dia da Semana"],
+        "Horas": sub_dados["Horas"],
+        "Minutos": sub_dados["Minutos"],
+        "Segundos": sub_dados["Segundos"]
+    }
 
-    salvar_em_csv(dados_mensagem, caminho_arquivo_csv)
-
-    print("# ================================================")
+    # Salva os dados atualizados no arquivo CSV
+    salvar_em_csv(dados_arquivo, caminho_arquivo_csv)
+    print("================================================")
     print("Mensagem Salva!!!")
     print("")
-    print("")
-    print("")
     input("Aperte Enter para continuar.")
-    limpar_tela()
-
-
+    limpar_tela()   
 
 # ================================================
 #        Cria Name ID da mensagem
 # ================================================
 
 def cria_name_id(ano, mes, dia, horas, minutos, segundos):
-    name_id = "datatime.datatime(" + str(ano) + ", " + str(mes) + ", " + str(dia) + ", " + str(horas) + ", " + str(minutos) + ", " + str(segundos) + ", tzinfo=datetime.timezone(datetime.timedelta(days=-1, seconds=75600)))"
-
+    name_id = f"datetime.datetime({ano}, {mes}, {dia}, {horas}, {minutos}, {segundos}, tzinfo=datetime.timezone(datetime.timedelta(days=-1, seconds=75600)))"
     return name_id
 
 # ================================================
@@ -169,23 +151,46 @@ def pega_dia_semana(ano, mes, dia):
 #        Função gerais
 # ================================================    
 
+# Pega apenas os Names IDs do arquivo
+def salva_name_id_arquivo(dados_arquivo):
+    names_ids_arquivo = {}
+
+    for i in range(len(dados_arquivo)):
+        id = dados_arquivo["Name ID"][13:-5]
+        names_ids_arquivo[i] = id
+
+    return names_ids_arquivo
+
 # Detecta o sistema operacional para limpar a tela
 def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 # Função para carregar os dados do arquivo CSV em um dicionário
+import csv
+
 def carregar_dados_csv(caminho_arquivo_csv):
     try:
         # Abre o arquivo CSV para leitura
         with open(caminho_arquivo_csv, mode='r', newline='', encoding='utf-8') as arquivo:
             lendo = csv.DictReader(arquivo)
-            # Converte os dados em um dicionário onde a chave é o "Name ID"
-            dados = {linha["Name ID"]: linha for linha in lendo}
-        return dados
+            
+            # Dicionário para armazenar os dados
+            arquivos_csv = {}
+            
+            # Itera sobre cada linha do CSV
+            for linha in lendo:
+                # Usa o valor da coluna "Name ID" como chave
+                name_id = linha["Name ID"]
+                
+                # Adiciona a linha ao dicionário usando "Name ID" como chave
+                arquivos_csv[name_id] = linha
+                
+        return arquivos_csv
+    
     except FileNotFoundError:
         # Se o arquivo não existir, retorna um dicionário vazio
         return {}
-
+    
 def salvar_em_csv(dados_mensagem, caminho_arquivo_csv):
     # Define os cabeçalhos das colunas
     cabecalhos = ["Name ID", "Andar", "Ano", "Mês", "Dia", "Dia da Semana", "Horas", "Minutos", "Segundos"]
@@ -204,7 +209,7 @@ def salvar_em_csv(dados_mensagem, caminho_arquivo_csv):
         # Escreve os novos dados
         writer.writerows(dados_mensagem.values())
 
-    main()
+
 
 # ================================================
 #        Menu Principal
@@ -239,34 +244,37 @@ def menu_principal():
 
 def main():
 
-    escolha = menu_principal()
+    while True:
 
-    if escolha == 0:
-        return
-    
-    elif escolha == 1:
-        dados_mensagem, name_id = adicionar_dados_mensagem()
-        sub_dados = dados_mensagem[name_id]
+        escolha = menu_principal()
 
-        print("# ================================================")
-        print("Confira os dados e aperte o Enter:")
-        print("")
-        print("")
-        print("")
-        print("# ================================================")
-        print(f"Name ID: {name_id}.")
-        print(f"Ano: {sub_dados["Ano"]}.")
-        print(f"Mês: {sub_dados["Mês"]}.")
-        print(f"Dia: {sub_dados["Dia"]}.")
-        print(f"Dia da Semana: {sub_dados["Dia da Semana"]}.")
-        print(f"Horas: {sub_dados["Horas"]}.")
-        print(f"Minutos: {sub_dados["Minutos"]}.")
-        print(f"Segundos: {sub_dados["Segundos"]}.")
-        print("# ================================================")
-        input("Aperte o Enter para continuar")
+        if escolha == 0:
+            return
+        
+        elif escolha == 1:
+            dados_mensagem, name_id = adicionar_dados_mensagem()
+            sub_dados = dados_mensagem[name_id]
 
-        # Salvando dados em um arquivo csv
-        salvar_dados_mensagem(dados_mensagem, name_id)
+            print("# ================================================")
+            print("Confira os dados e aperte o Enter:")
+            print("")
+            print("")
+            print("")
+            print("# ================================================")
+            print(f"Name ID: {name_id}.")
+            print(f"Ano: {sub_dados["Ano"]}.")
+            print(f"Mês: {sub_dados["Mês"]}.")
+            print(f"Dia: {sub_dados["Dia"]}.")
+            print(f"Dia da Semana: {sub_dados["Dia da Semana"]}.")
+            print(f"Horas: {sub_dados["Horas"]}.")
+            print(f"Minutos: {sub_dados["Minutos"]}.")
+            print(f"Segundos: {sub_dados["Segundos"]}.")
+            print("# ================================================")
+            input("Aperte o Enter para continuar")
+
+            # Salvando dados em um arquivo csv
+            salvar_dados_mensagem(dados_mensagem, name_id)
+        
 
 
 main()
