@@ -189,7 +189,7 @@ def salvar_em_csv(dados_mensagem, caminho_arquivo_csv):
         # Escreve os novos dados
         writer.writerows(dados_mensagem.values())
 
-# Função para pegar os Names IDs 
+# Função para pegar os Names IDs do arquivo csv 
 def def_names_ids_arquivo(caminho_arquivo):
     
     name_ids_arquivo = []
