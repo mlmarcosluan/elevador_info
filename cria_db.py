@@ -91,20 +91,25 @@ def salvar_dados_mensagem(dados_mensagem, name_id):
     caminho_arquivo_csv = "/home/marcos/VScode/elevador_info/data_base/data_base.csv"
     
     # Carrega os dados existentes do arquivo CSV
-    dados_arquivo = carregar_dados_csv(caminho_arquivo_csv)
+    names_ids_arquivo = def_names_ids_arquivo(caminho_arquivo_csv)
     
-    # Verifica se o name_id já existe no arquivo
-    if name_id in dados_arquivo:
-        print("# ================================================")
-        print("Mensagem já salva no banco de dados.")
-        print("")
-        input("Aperte Enter para continuar.")
-        limpar_tela()
-        return
+    # Se os dados_arquivo for vazio, passa para o proximo passo
+    if len(names_ids_arquivo) != 0:
+
+        # Verifica se o name_id já existe no arquivo
+        for name in names_ids_arquivo:
+            if name_id == name:
+                print("# ================================================")
+                print("Mensagem já salva no banco de dados.")
+                print("")
+                input("Aperte Enter para continuar.")
+                limpar_tela()
+                return
 
     # Adiciona a nova mensagem ao dicionário
     sub_dados = dados_mensagem[name_id]
-    dados_arquivo[name_id] = {
+    dados_para_salvar = {}
+    dados_para_salvar[name_id] = {
         "Name ID": name_id,
         "Andar": sub_dados["Andar"],
         "Ano": sub_dados["Ano"],
@@ -117,7 +122,7 @@ def salvar_dados_mensagem(dados_mensagem, name_id):
     }
 
     # Salva os dados atualizados no arquivo CSV
-    salvar_em_csv(dados_arquivo, caminho_arquivo_csv)
+    salvar_em_csv(dados_para_salvar, caminho_arquivo_csv)
     print("================================================")
     print("Mensagem Salva!!!")
     print("")
@@ -165,32 +170,7 @@ def salva_name_id_arquivo(dados_arquivo):
 def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-# Função para carregar os dados do arquivo CSV em um dicionário
-import csv
-
-def carregar_dados_csv(caminho_arquivo_csv):
-    try:
-        # Abre o arquivo CSV para leitura
-        with open(caminho_arquivo_csv, mode='r', newline='', encoding='utf-8') as arquivo:
-            lendo = csv.DictReader(arquivo)
-            
-            # Dicionário para armazenar os dados
-            arquivos_csv = {}
-            
-            # Itera sobre cada linha do CSV
-            for linha in lendo:
-                # Usa o valor da coluna "Name ID" como chave
-                name_id = linha["Name ID"]
-                
-                # Adiciona a linha ao dicionário usando "Name ID" como chave
-                arquivos_csv[name_id] = linha
-                
-        return arquivos_csv
-    
-    except FileNotFoundError:
-        # Se o arquivo não existir, retorna um dicionário vazio
-        return {}
-    
+# Salvar dados da mensagem no arquivo csv    
 def salvar_em_csv(dados_mensagem, caminho_arquivo_csv):
     # Define os cabeçalhos das colunas
     cabecalhos = ["Name ID", "Andar", "Ano", "Mês", "Dia", "Dia da Semana", "Horas", "Minutos", "Segundos"]
@@ -209,7 +189,28 @@ def salvar_em_csv(dados_mensagem, caminho_arquivo_csv):
         # Escreve os novos dados
         writer.writerows(dados_mensagem.values())
 
+# Função para pegar os Names IDs 
+def def_names_ids_arquivo(caminho_arquivo):
+    
+    name_ids_arquivo = []
 
+    try:
+
+        # Abrir o arquivo CSV
+        with open(caminho_arquivo, mode='r', encoding='utf-8') as file:
+            # Criar um leitor CSV
+            lendo = csv.DictReader(file)
+            
+            # Iterar sobre as linhas do arquivo
+            for linha in lendo:
+                # Adicionar o valor da coluna "Name ID" à lista
+                name_ids_arquivo.append(linha["Name ID"])
+
+    except FileNotFoundError:
+        # Se o arquivo não existir, retorna um dicionário vazio
+        return {}
+        
+    return name_ids_arquivo
 
 # ================================================
 #        Menu Principal
@@ -262,6 +263,7 @@ def main():
             print("")
             print("# ================================================")
             print(f"Name ID: {name_id}.")
+            print(f"Andar: {sub_dados["Andar"]}.")
             print(f"Ano: {sub_dados["Ano"]}.")
             print(f"Mês: {sub_dados["Mês"]}.")
             print(f"Dia: {sub_dados["Dia"]}.")
