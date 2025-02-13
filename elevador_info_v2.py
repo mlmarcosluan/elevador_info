@@ -22,6 +22,9 @@ from dotenv import load_dotenv
 # Importa classes do módulo datetime (datetime, timedelta, timezone) para manipular datas, horários e fusos horários.
 from datetime import datetime, timedelta, timezone
 
+# Importa funcionalidades da biblioteca colorama para adicionar cores e estilos ao terminal.
+from colorama import init, Fore, Style
+
 # ================================================
 #        Pegar dados do arquivo .env
 # ================================================
@@ -45,3 +48,61 @@ def dados_api_telegram():
         return
 
     return api_id, api_hash, phone_number, session_name, user_name_grupo
+# ================================================
+#        Funções gerais
+
+# ================================================
+# Detecta o sistema operacional para limpar a tela
+def limpar_tela():
+    os.system('cls' if os.name == 'nt' else 'clear')
+# ================================================
+
+# ================================================
+
+# ================================================
+#        Menus do script
+
+def menu_principal():
+    while True:
+        limpar_tela()
+        
+        # Cabeçalho estilizado
+        print(Fore.CYAN + "================================================")
+        print(Fore.GREEN + "              MENU PRINCIPAL                   ")
+        print(Fore.CYAN + "================================================")
+        
+        # Opções do menu
+        print(Fore.YELLOW + "[1]" + Fore.WHITE + " - Buscar mensagens novas")
+        print(Fore.YELLOW + "[2]" + Fore.WHITE + " - Teste teste")
+        print(Fore.YELLOW + "[3]" + Fore.WHITE + " - Outra opção")
+        print(Fore.YELLOW + "[4]" + Fore.WHITE + " - Mais uma opção")
+        print(Fore.RED + "[0]" + Fore.WHITE + " - Sair")
+        
+        print(Fore.CYAN + "================================================")
+        
+        # Entrada do usuário
+        try:
+            escolha = int(input(Fore.MAGENTA + "Digite sua escolha: " + Fore.WHITE))
+            return escolha
+        except ValueError:
+            print(Fore.RED + "Erro: Por favor, digite um número válido.")
+            input(Fore.YELLOW + "Pressione Enter para continuar...")
+
+# ================================================
+
+# ================================================
+#        Função principal
+
+async def main():
+    # Inicializa o colorama para suporte a cores no terminal
+    init(autoreset=True)
+
+    # Chama o menu principal
+    escolha = menu_principal()
+    
+
+# ================================================    
+
+# Executar o script
+if __name__ == "__main__":
+    asyncio.run(main())
